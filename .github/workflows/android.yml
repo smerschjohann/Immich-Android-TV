@@ -34,7 +34,7 @@ jobs:
     - name: google-services.json and extra strings file (faked)
       run: |
           cp ./app/google-services.example ./app/google-services.json
-          cp ./app/src/strings_other.xml.example ./app/src/main/res/values/strings_other.xml
+          cp ./app/strings_other.xml.example ./app/src/main/res/values/strings_other.xml
 
     - name: Build with Gradle
       run: ./gradlew assembleRelease
