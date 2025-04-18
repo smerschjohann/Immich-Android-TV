@@ -75,15 +75,17 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
+                <category android:name="android.intent.category.HOME" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-
+<!--
             <intent-filter>
                 <action android:name="com.google.android.gms.cast.tv.action.LAUNCH" />
                 <action android:name="com.google.android.gms.cast.tv.action.LOAD"/>
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-
+-->
         </activity>
 
         <!-- BroadcastReceiver for setting up the home screen channel -->
