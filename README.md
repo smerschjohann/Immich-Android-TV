@@ -1,5 +1,7 @@
 # Immich Android TV
 
+THIS IS A FORK that sets the App as a possible HOME Launcher. It is not feature complete as it skips the Firebase setup.
+
 Immich is a self hosted backup solution for photos and videos. Current features include:
 
 - Upload and view videos and photos
