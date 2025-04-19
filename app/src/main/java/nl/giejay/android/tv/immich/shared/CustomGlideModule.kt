@@ -41,7 +41,8 @@ class CustomGlideModule : AppGlideModule() {
                     disableSsl,
                     apiKey,
                     // never enable debug mode of responses in glide, too much data
-                    false
+                    false,
+                    null
                 )
             )
         } else {

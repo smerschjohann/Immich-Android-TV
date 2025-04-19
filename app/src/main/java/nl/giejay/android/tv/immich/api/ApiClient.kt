@@ -17,6 +17,7 @@ import nl.giejay.android.tv.immich.shared.prefs.PreferenceManager
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.File
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.UUID
@@ -28,7 +29,7 @@ data class ApiClientConfig(
     val debugMode: Boolean
 )
 
-class ApiClient(private val config: ApiClientConfig) {
+class ApiClient(private val config: ApiClientConfig, externalFilesDir: File? = null) {
     companion object ApiClient {
         private var apiClient: nl.giejay.android.tv.immich.api.ApiClient? = null
         fun getClient(config: ApiClientConfig): nl.giejay.android.tv.immich.api.ApiClient {
@@ -42,7 +43,7 @@ class ApiClient(private val config: ApiClientConfig) {
     }
 
     private val retrofit = Retrofit.Builder()
-        .client(ApiClientFactory.getClient(config.disableSslVerification, config.apiKey, config.debugMode))
+        .client(ApiClientFactory.getClient(config.disableSslVerification, config.apiKey, config.debugMode, externalFilesDir))
         .addConverterFactory(GsonConverterFactory.create())
         .baseUrl("${config.hostName}/api/")
         .build()

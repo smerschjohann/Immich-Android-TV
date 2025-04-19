@@ -17,14 +17,6 @@ package nl.giejay.android.tv.immich
 
 import android.app.Application
 import android.content.Context
-import android.os.StrictMode
-import android.util.Log
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.OnLifecycleEvent
-import androidx.lifecycle.ProcessLifecycleOwner
-import com.google.android.gms.cast.tv.CastReceiverContext
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import nl.giejay.android.tv.immich.shared.prefs.PreferenceManager
 import timber.log.Timber
 import java.util.UUID
@@ -43,8 +35,6 @@ class ImmichApplication : Application() {
 
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
-        } else {
-            Timber.plant(CrashReportingTree())
         }
 
         /**
@@ -53,50 +43,16 @@ class ImmichApplication : Application() {
          * and the data load and so needs to exist while the app is in the foreground so that all
          * cast commands can be picked up by the TV App.
          */
-        CastReceiverContext.initInstance((this))
-        ProcessLifecycleOwner.get().lifecycle.addObserver(AppLifecycleObserver(ProcessLifecycleOwner.get().lifecycle))
         var userId = PreferenceManager.getUserId()
         if(userId.isBlank()){
             userId = UUID.randomUUID().toString()
             PreferenceManager.setUserId(userId)
         }
-        FirebaseCrashlytics.getInstance().setUserId(userId)
     }
 
-    /**
-     * TVs only have at most one app in the foreground so we can use onResume/onPause.
-     * For other form factors, this registration may vary.
-     */
-    class AppLifecycleObserver(val lifecycle: Lifecycle) : LifecycleObserver {
-
-        @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-        fun onResume() {
-            CastReceiverContext.getInstance().start()
-        }
-
-        @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
-        fun onPause() {
-            CastReceiverContext.getInstance().stop()
-        }
-    }
 
     companion object {
         var appContext: Context? = null
     }
 
-    private class CrashReportingTree : Timber.Tree() {
-        val instance = FirebaseCrashlytics.getInstance()
-
-        override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
-            if (priority == Log.VERBOSE || (priority == Log.DEBUG && !PreferenceManager.debugEnabled())) {
-                return
-            }
-            instance.log("$tag : $message")
-            if (t != null) {
-                instance.recordException(t)
-            } else if (priority == Log.ERROR) {
-                instance.recordException(UnknownError(message))
-            }
-        }
-    }
 }

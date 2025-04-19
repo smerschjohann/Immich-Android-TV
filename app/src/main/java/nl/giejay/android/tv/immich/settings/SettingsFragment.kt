@@ -1,6 +1,9 @@
 package nl.giejay.android.tv.immich.settings
 
 import android.app.Activity
+import android.content.Intent
+import android.util.Log
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.leanback.app.RowsSupportFragment
 import androidx.leanback.widget.ArrayObjectAdapter
 import androidx.leanback.widget.HeaderItem
@@ -10,11 +13,22 @@ import androidx.leanback.widget.OnItemViewClickedListener
 import androidx.navigation.fragment.findNavController
 import nl.giejay.android.tv.immich.home.HomeFragmentDirections
 import nl.giejay.android.tv.immich.shared.donate.DonateService
+import timber.log.Timber
 
 
 class SettingsFragment : RowsSupportFragment() {
     private val mRowsAdapter: ArrayObjectAdapter
     private lateinit var donateService: DonateService
+
+    private val settingsResultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            // This block is executed when the launched activity (Settings) returns.
+            if (result.resultCode == Activity.RESULT_OK) {
+                Timber.tag("SettingsFragment").d("Settings activity returned RESULT_OK")
+            } else if (result.resultCode == Activity.RESULT_CANCELED) {
+                Timber.tag("SettingsFragment").d("Settings activity returned cancelled")
+            }
+        }
 
     init {
         val selector = ListRowPresenter()
@@ -81,6 +95,15 @@ class SettingsFragment : RowsSupportFragment() {
                             findNavController().navigate(
                                 HomeFragmentDirections.actionGlobalToSettingsDialog("debug")
                             )
+                        },
+                        SettingsCard(
+                            "Android Settings",
+                            null,
+                            "android_settings",
+                            "ic_settings_settings",
+                            "ic_settings_settings"
+                        ) {
+                            settingsResultLauncher.launch(Intent(android.provider.Settings.ACTION_SETTINGS))
                         },
                         SettingsCard(
                             "Donate",
