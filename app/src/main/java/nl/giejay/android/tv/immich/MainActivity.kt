@@ -29,6 +29,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph
 import androidx.navigation.fragment.NavHostFragment
+import nl.giejay.android.tv.immich.sensors.PowerUtils
 import nl.giejay.android.tv.immich.shared.prefs.PreferenceManager
 import nl.giejay.android.tv.immich.shared.viewmodel.KeyEventsViewModel
 import timber.log.Timber
@@ -65,6 +66,12 @@ class MainActivity : FragmentActivity() {
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         keyEventsModel.postKeyEvent(event)
+
+        if((event?.keyCode == KeyEvent.KEYCODE_POWER || event?.keyCode == KeyEvent.KEYCODE_F1) && event.action == KeyEvent.ACTION_DOWN){
+            Timber.i("Power key pressed")
+            ImmichApplication.activitySensor?.powerButtonPressed()
+        }
+
         return super.onKeyDown(keyCode, event)
     }
 

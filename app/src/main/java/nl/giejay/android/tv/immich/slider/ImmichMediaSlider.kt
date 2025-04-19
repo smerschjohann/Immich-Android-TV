@@ -2,6 +2,7 @@ package nl.giejay.android.tv.immich.slider
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.View
 import android.widget.Toast
 import androidx.media3.datasource.DefaultHttpDataSource
@@ -32,4 +33,5 @@ class ImmichMediaSlider : MediaSliderFragment() {
 
         loadMediaSliderView(bundle.config)
     }
+
 }

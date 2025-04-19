@@ -20,13 +20,17 @@ public class SensorPoller {
         });
     }
 
+    public boolean isSleepModeActive() {
+        return sleepModeActive;
+    }
+
     public void checkIfActivityDetected(SensorServiceCallback callback) {
         if (this.disabled || this.durationBeforeSleep < 1) {
             return;
         }
         if (!hardwareSensor.isActivityDetected()) {
             if (this.idleDuration % 30000 == 0) {
-                Timber.d("No activity detected for %d minutes, already in sleep mode: %b", this.idleDuration / 1000.0 / 60.0, sleepModeActive);
+                Timber.d("No activity detected for %d minutes, already in sleep mode: %b", this.idleDuration / 1000 / 60, sleepModeActive);
             }
             this.idleDuration += 1000;
 

@@ -44,6 +44,14 @@ public class ActivitySensor {
         }
     }
 
+    public void powerButtonPressed() {
+        if(instance.isSleepModeActive()) {
+            powerUtils.wakeUp();
+        } else {
+            powerUtils.goToSleep();
+        }
+    }
+
     public void resetMotionSensor() {
         instance.resetMotionSensor();
     }
