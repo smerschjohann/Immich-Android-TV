@@ -4,6 +4,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory
+            android:title="WakeLock">
+        <ListPreference
+                android:key="wake_lock_minutes"
+                android:title="Wakelock"
+                android:summary="How many minutes without sensor movement before turning off"
+                app:useSimpleSummaryProvider="true"
+                android:entries="@array/wake_lock_minutes"
+                android:defaultValue="15"
+                android:entryValues="@array/wake_lock_minutes"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
         android:title="Ordering">
 
         <ListPreference

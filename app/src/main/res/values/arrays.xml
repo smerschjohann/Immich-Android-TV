@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <string-array name="wake_lock_minutes">
+        <item>1</item>
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>30</item>
+        <item>45</item>
+        <item>60</item>
+        <item>90</item>
+        <item>120</item>
+        <item>always on</item>
+    </string-array>
+
     <array name="interval_titles">
         <item>1 second</item>
         <item>3 seconds</item>

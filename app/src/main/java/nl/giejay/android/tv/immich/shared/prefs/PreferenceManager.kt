@@ -12,6 +12,9 @@ object PreferenceManager {
     private lateinit var liveSharedPreferences: LiveSharedPreferences
     private val liveContext: MutableMap<String, Any> = mutableMapOf()
 
+    // wakelock
+    val KEY_WAKE_LOCK_MINUTES = "wake_lock_minutes"
+
     // host settings
     val KEY_HOST_NAME = "hostName"
     val KEY_API_KEY = "apiKey"
@@ -59,6 +62,7 @@ object PreferenceManager {
     private val KEY_USER_ID = "user_id"
 
     private val propsToWatch = mapOf(
+        KEY_WAKE_LOCK_MINUTES to 15,
         KEY_HOST_NAME to "",
         KEY_API_KEY to "",
         KEY_DISABLE_SSL_VERIFICATION to false,
@@ -102,6 +106,15 @@ object PreferenceManager {
             liveSharedPreferences.subscribe(key, defaultValue) { value ->
                 liveContext[key] = value
             }
+        }
+    }
+
+    fun wakeLockMinutes(): Int {
+        val value = liveContext[KEY_WAKE_LOCK_MINUTES].toString()
+        return if(value == "always on") {
+            0
+        } else {
+            value.toInt()
         }
     }
 

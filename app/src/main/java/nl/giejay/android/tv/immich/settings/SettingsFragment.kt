@@ -86,17 +86,6 @@ class SettingsFragment : RowsSupportFragment() {
                             )
                         },
                         SettingsCard(
-                            "Debug",
-                            null,
-                            "debug",
-                            "bug",
-                            "bug"
-                        ) {
-                            findNavController().navigate(
-                                HomeFragmentDirections.actionGlobalToSettingsDialog("debug")
-                            )
-                        },
-                        SettingsCard(
                             "Android Settings",
                             null,
                             "android_settings",
@@ -104,18 +93,6 @@ class SettingsFragment : RowsSupportFragment() {
                             "ic_settings_settings"
                         ) {
                             settingsResultLauncher.launch(Intent(android.provider.Settings.ACTION_SETTINGS))
-                        },
-                        SettingsCard(
-                            "Donate",
-                            null,
-                            "donate",
-                            "donate",
-                            "donate",
-//                            donateService.isInitialized()
-                        ) {
-                            findNavController().navigate(
-                                HomeFragmentDirections.actionHomeToDonate()
-                            )
                         }
                     )
                 )

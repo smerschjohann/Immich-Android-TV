@@ -20,6 +20,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.net.http.HttpResponseCache
 import android.os.Bundle
 import android.view.KeyEvent
 import androidx.core.content.ContextCompat
@@ -31,6 +32,8 @@ import androidx.navigation.fragment.NavHostFragment
 import nl.giejay.android.tv.immich.shared.prefs.PreferenceManager
 import nl.giejay.android.tv.immich.shared.viewmodel.KeyEventsViewModel
 import timber.log.Timber
+import java.io.File
+import java.io.IOException
 
 
 /**

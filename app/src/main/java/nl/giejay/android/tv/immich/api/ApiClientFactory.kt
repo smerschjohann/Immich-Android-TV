@@ -5,10 +5,8 @@ import nl.giejay.android.tv.immich.api.util.UnsafeOkHttpClient
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import timber.log.Timber
-import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileInputStream
-import java.io.InputStream
 import java.security.KeyStore
 import javax.net.ssl.KeyManagerFactory
 import javax.net.ssl.SSLContext

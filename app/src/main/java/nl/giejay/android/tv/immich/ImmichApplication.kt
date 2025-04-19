@@ -17,21 +17,28 @@ package nl.giejay.android.tv.immich
 
 import android.app.Application
 import android.content.Context
+import android.os.Build
+import nl.giejay.android.tv.immich.sensors.ActivitySensor
 import nl.giejay.android.tv.immich.shared.prefs.PreferenceManager
 import timber.log.Timber
 import java.util.UUID
 
+import android.os.Handler
 
 /**
  * Initializes libraries, such as Timber, and sets up application wide settings.
  */
 class ImmichApplication : Application() {
 
+    private val mainHandler: Handler = Handler()
+    private val sensorServiceRunnable = SensorService(mainHandler)
+
     override fun onCreate() {
         super.onCreate()
 
         appContext = this
         PreferenceManager.init(this)
+        activitySensor = ActivitySensor(this)
 
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
@@ -48,11 +55,24 @@ class ImmichApplication : Application() {
             userId = UUID.randomUUID().toString()
             PreferenceManager.setUserId(userId)
         }
+
+        this.mainHandler.post(sensorServiceRunnable)
     }
 
 
     companion object {
         var appContext: Context? = null
+
+        var activitySensor: ActivitySensor? = null
+    }
+
+
+    class SensorService internal constructor(val handler: Handler? = null) : Runnable {
+        override fun run() {
+            handler?.removeCallbacks(this)
+            activitySensor?.checkSensors()
+            handler?.postDelayed(this, 1000L)
+        }
     }
 
 }
