@@ -38,7 +38,7 @@ jobs:
       run: |
         echo "${{ secrets.ANDROID_KEYSTORE }}" | base64 --decode > keystore.jks
         jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore keystore.jks -storepass "${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" app/build/outputs/apk/release/app-release-unsigned.apk "${{ secrets.ANDROID_KEY_ALIAS }}"
-        zipalign -v 4 app/build/outputs/apk/release/app-release-unsigned.apk app/build/outputs/apk/release/immich-${{ github.ref }}.apk
+        mv app/build/outputs/apk/release/app-release-unsigned.apk app/build/outputs/apk/release/immich-${{ github.ref }}.apk
     - name: create release using gh cli
       if: startsWith(github.ref, 'refs/tags/v')
       run: |

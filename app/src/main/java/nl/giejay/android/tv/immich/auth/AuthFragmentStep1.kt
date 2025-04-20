@@ -18,8 +18,6 @@ import timber.log.Timber
 
 class AuthFragmentStep1 : GuidedStepSupportFragment() {
     private val ACTION_SIGN_IN = 0L
-    private val ACTION_DEMO = 1L
-    private val ACTION_PHONE_SIGN_IN = 2L
     private val ACTION_CONTINUE = 3L
     private var SELECTED_OPTION: Long = ACTION_SIGN_IN
 
@@ -57,13 +55,8 @@ class AuthFragmentStep1 : GuidedStepSupportFragment() {
         super.onGuidedActionClicked(action)
         Timber.i("Clicked ${action.title} on step 1 of authentication, option: ${SELECTED_OPTION}")
         if (action.id == ACTION_CONTINUE) {
-            val hostName = requireContext().resources.getString(R.string.host_name)
             val navController = findNavController()
             if (SELECTED_OPTION == ACTION_SIGN_IN) {
-                if (PreferenceManager.hostName() == hostName) {
-                    // remove demo instance api key
-                    PreferenceManager.removeApiSettings()
-                }
                 if (navController.currentDestination?.id == R.id.authFragment) {
                     Timber.i("Navigating to step 2")
                     //https://stackoverflow.com/questions/51060762/illegalargumentexception-navigation-destination-xxx-is-unknown-to-this-navcontr
