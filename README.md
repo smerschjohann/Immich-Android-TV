@@ -1,6 +1,56 @@
 # Immich Android TV
 
-THIS IS A FORK that sets the App as a possible HOME Launcher. It is not feature complete as it skips the Firebase setup.
+## Fork Notice
+_THIS IS A FORK_ specifically tailored for use on a Nixplay frame.
+
+It has the following changes:
+- Added Android Settings to settings page
+- Added motion sensor to turn the display on, set the wakelock in the settings. Default value: 15 minutes.
+- Added POWER button on remote to turn of screen (after display turnoff time)
+- Added abilitiy to use client certificates (put it in /storage/emulated/0/Android/data/nl.giejay.android.tv.immich/files/immich.p12 with password 'immich')
+- Added the app as HOME-launcher app
+- Removed all Firebase and Cast functionality
+- Removed donation button as it is not working on the frame. Feel free to support the original author: https://github.com/giejay/Immich-Android-TV
+
+## How to install
+
+Disclaimer: This guide is based on the W10E model. Please note that improper handling or software errors may damage your device. You are the only one responsible for any damages caused by your modification to either hardware or software.
+
+To open the device, you can use a credit card or the IFixit opener, which worked well and left no visible marks after reassembly.
+
+Behind the display, there is a USB port on a circuit board. The display is lightly taped to the metal backing, which can be carefully removed for better access to the controller.
+
+You may need to unscrew the board to connect a USB cable to the port. The frame will automatically power on when connected to a PC.
+
+As soon as you have access to ADB over USB you can start replacing the software.
+
+1. Disable the original software on the frame.
+```bash
+adb shell
+$ su
+$ pm disable com.kitesystems.nix.prod & pm disable com.kitesystems.nix.frame
+```
+2. Enable ADB over network to ensure that you can access the device later on, even without opening the frame again.
+```bash
+adb shell
+$ su
+$ setprop persist.adb.tcp.port 6666
+```
+3. install the app. Note: It must be a system app to access the motion sensor.
+```bash
+adb root && adb remount && adb push app-debug.apk /system/app/immich.apk && adb reboot
+```
+4. (optional) Copy client certificate to the frame (p12 password must be 'immich')
+```bash
+adb push immich-eltern.p12 /storage/emulated/0/Android/data/nl.giejay.android.tv.immich/files/immich.p12
+```
+5. Setup your credentials. You can use [scrcpy](https://github.com/Genymobile/scrcpy) to screen share the Nixplay screen to your PC. You can also send the Immich host information using adb (`adb shell input text https://demo.immich.app`)
+6. Go to Android Settings (using settings menu or by `adb shell am start -a android.settings.SETTINGS`). Set the display to turn off after shortest time, disable screensaver if any.
+
+*Enjoy!*
+
+
+## original documentation
 
 Immich is a self hosted backup solution for photos and videos. Current features include:
 
