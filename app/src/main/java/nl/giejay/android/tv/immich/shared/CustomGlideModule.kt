@@ -6,6 +6,7 @@ import com.bumptech.glide.GlideBuilder
 import com.bumptech.glide.Registry
 import com.bumptech.glide.annotation.GlideModule
 import com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader
+import com.bumptech.glide.load.engine.cache.InternalCacheDiskCacheFactory
 import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.module.AppGlideModule
 import nl.giejay.android.tv.immich.api.ApiClientFactory
@@ -55,6 +56,8 @@ class CustomGlideModule : AppGlideModule() {
     }
 
     override fun applyOptions(context: Context, builder: GlideBuilder) {
+        val diskCacheSizeBytes = 1024L * 1024 * 1024 * 3 // 3 GiB
+        builder.setDiskCache(InternalCacheDiskCacheFactory(context, diskCacheSizeBytes))
     }
 
     override fun registerComponents(
