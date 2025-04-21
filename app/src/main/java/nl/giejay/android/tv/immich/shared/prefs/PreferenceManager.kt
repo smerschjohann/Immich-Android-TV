@@ -6,6 +6,7 @@ import androidx.preference.PreferenceManager
 import nl.giejay.android.tv.immich.screensaver.ScreenSaverType
 import nl.giejay.mediaslider.transformations.GlideTransformations
 import okhttp3.HttpUrl
+import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 
 object PreferenceManager {
     lateinit var sharedPreference: SharedPreferences
@@ -203,7 +204,7 @@ object PreferenceManager {
     }
 
     fun isValid(hostName: String?, apiKey: String?): Boolean {
-        return hostName?.isNotBlank() == true && apiKey?.isNotBlank() == true && HttpUrl.parse(hostName) != null
+        return hostName?.isNotBlank() == true && apiKey?.isNotBlank() == true && hostName.toHttpUrlOrNull() != null
     }
 
     fun removeApiSettings() {

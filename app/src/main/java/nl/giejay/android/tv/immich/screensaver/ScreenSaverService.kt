@@ -5,6 +5,7 @@ import android.service.dreams.DreamService
 import android.view.KeyEvent
 import android.widget.Toast
 import androidx.media3.datasource.DefaultHttpDataSource
+import androidx.media3.datasource.okhttp.OkHttpDataSource
 import arrow.core.Either
 import arrow.core.getOrElse
 import com.zeuskartik.mediaslider.DisplayOptions
@@ -51,8 +52,7 @@ class ScreenSaverService : DreamService(),MediaSliderListener {
         apiClient = ApiClient.getClient(config)
         mediaSliderView = MediaSliderView(this)
         mediaSliderView.setDefaultExoFactory(
-            DefaultHttpDataSource.Factory()
-                .setDefaultRequestProperties(mapOf("x-api-key" to apiKey))
+            OkHttpDataSource.Factory(ApiClient.getOkHttpClient())
         )
         setContentView(mediaSliderView)
         isInteractive = true

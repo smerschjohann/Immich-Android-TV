@@ -6,8 +6,10 @@ import android.view.KeyEvent
 import android.view.View
 import android.widget.Toast
 import androidx.media3.datasource.DefaultHttpDataSource
+import androidx.media3.datasource.okhttp.OkHttpDataSource
 import androidx.navigation.fragment.findNavController
 import com.zeuskartik.mediaslider.MediaSliderFragment
+import nl.giejay.android.tv.immich.api.ApiClient
 import nl.giejay.android.tv.immich.shared.prefs.PreferenceManager
 import timber.log.Timber
 
@@ -25,10 +27,8 @@ class ImmichMediaSlider : MediaSliderFragment() {
             findNavController().popBackStack()
             return
         }
-
         setDefaultExoFactory(
-            DefaultHttpDataSource.Factory()
-                .setDefaultRequestProperties(mapOf("x-api-key" to PreferenceManager.apiKey()))
+            OkHttpDataSource.Factory(ApiClient.getOkHttpClient())
         )
 
         loadMediaSliderView(bundle.config)

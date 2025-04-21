@@ -1,6 +1,5 @@
 package nl.giejay.android.tv.immich.api
 
-import nl.giejay.android.tv.immich.api.interceptor.ResponseLoggingInterceptor
 import nl.giejay.android.tv.immich.api.util.UnsafeOkHttpClient
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -70,10 +69,7 @@ object ApiClientFactory {
         configureClientCertificateP12(builder, p12File, "immich".toCharArray())
 
         builder.addInterceptor(apiKeyInterceptor)
-        return if (debugMode) {
-            builder.addInterceptor(ResponseLoggingInterceptor()).build()
-        } else
-            builder.build()
+        return builder.build()
     }
 
     private fun interceptor(apiKey: String): Interceptor = Interceptor { chain ->

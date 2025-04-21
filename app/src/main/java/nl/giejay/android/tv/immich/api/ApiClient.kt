@@ -14,6 +14,7 @@ import nl.giejay.android.tv.immich.api.service.ApiService
 import nl.giejay.android.tv.immich.api.util.ApiUtil.executeAPICall
 import nl.giejay.android.tv.immich.shared.prefs.PhotosOrder
 import nl.giejay.android.tv.immich.shared.prefs.PreferenceManager
+import okhttp3.OkHttpClient
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -39,11 +40,16 @@ class ApiClient(private val config: ApiClientConfig, externalFilesDir: File? = n
             return apiClient!!
         }
 
+        fun getOkHttpClient(): OkHttpClient {
+            return apiClient!!.okHttpClient
+        }
+
         val dateTimeFormatter: DateTimeFormatter = DateTimeFormatter.ISO_DATE_TIME;
     }
 
+    private val okHttpClient = ApiClientFactory.getClient(config.disableSslVerification, config.apiKey, config.debugMode, externalFilesDir)
     private val retrofit = Retrofit.Builder()
-        .client(ApiClientFactory.getClient(config.disableSslVerification, config.apiKey, config.debugMode, externalFilesDir))
+        .client(okHttpClient)
         .addConverterFactory(GsonConverterFactory.create())
         .baseUrl("${config.hostName}/api/")
         .build()
