@@ -35,8 +35,10 @@ public class SensorPoller {
             this.idleDuration += 1000;
 
             boolean noMotionForFullDuration = this.idleDuration > this.durationBeforeSleep;
-            if (noMotionForFullDuration && !sleepModeActive) {
-                Timber.d("-------Going to sleep--------");
+            if (noMotionForFullDuration) {
+                if(!sleepModeActive) {
+                    Timber.d("-------Going to sleep--------");
+                }
                 callback.sleep();
                 sleepModeActive = true;
                 return;

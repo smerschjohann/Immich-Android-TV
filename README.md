@@ -42,10 +42,11 @@ adb root && adb remount && adb push app-debug.apk /system/app/immich.apk && adb 
 ```
 4. (optional) Copy client certificate to the frame (p12 password must be 'immich')
 ```bash
-adb push immich-eltern.p12 /storage/emulated/0/Android/data/nl.giejay.android.tv.immich/files/immich.p12
+adb push immich.p12 /storage/emulated/0/Android/data/nl.giejay.android.tv.immich/files/immich.p12
 ```
 5. Setup your credentials. You can use [scrcpy](https://github.com/Genymobile/scrcpy) to screen share the Nixplay screen to your PC. You can also send the Immich host information using adb (`adb shell input text https://demo.immich.app`)
 6. Go to Android Settings (using settings menu or by `adb shell am start -a android.settings.SETTINGS`). Set the display to turn off after shortest time, disable screensaver if any.
+   Or use `adb shell settings put system screen_off_timeout 1` for absolute minimal time.
 
 *Enjoy!*
 

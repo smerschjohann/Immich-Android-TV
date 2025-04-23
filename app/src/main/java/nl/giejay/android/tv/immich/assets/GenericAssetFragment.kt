@@ -45,6 +45,11 @@ abstract class GenericAssetFragment : VerticalCardGridFragment<Asset>() {
         if (PreferenceManager.enableSlideAnimation()) {
             displayOptions += DisplayOptions.ANIMATE_ASST_SLIDE
         }
+        if (PreferenceManager.screensaverShowClock()) {
+            displayOptions += DisplayOptions.CLOCK
+            displayOptions += DisplayOptions.GRADIENT_OVERLAY
+        }
+
 
         val toSliderItems = assets.toSliderItems(keepOrder = true, mergePortrait = PreferenceManager.sliderMergePortraitPhotos())
         val loadMore: LoadMore = suspend {
