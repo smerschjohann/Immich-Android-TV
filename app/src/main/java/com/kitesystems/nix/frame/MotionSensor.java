@@ -4,7 +4,7 @@ import nl.giejay.android.tv.immich.sensors.HardwareSensor;
 import timber.log.Timber;
 
 public class MotionSensor implements HardwareSensor {
-    private static boolean HAVE_GPIO = false;
+    private static boolean LIBRARY_LOADED;
     private static final String LIBRARY_NAME = "gpio_jni";
 
     public native int readMotionSensor();
@@ -15,40 +15,23 @@ public class MotionSensor implements HardwareSensor {
 
     public native int setWakeOnMotion(boolean b);
 
-    public boolean isActivityDetected() {
-        if (!getSensorEnabled()) {
-            setSensorEnabled(true);
-        }
-        return isMotionDetectedNow();
-    }
-
-    static {
-        HAVE_GPIO = false;
-        try {
-            System.loadLibrary(LIBRARY_NAME);
-            HAVE_GPIO = true;
-        } catch (UnsatisfiedLinkError x) {
-            Timber.d("Could not load library %s: %s", LIBRARY_NAME, x.getMessage());
-        }
-    }
-
-    private synchronized void setSensorEnabled(boolean enabled) {
-        if (HAVE_GPIO) {
-            setMotionSensorPower(enabled);
-        }
-    }
-
-    private synchronized boolean isMotionDetectedNow() {
-        if (HAVE_GPIO) {
+    public synchronized boolean isActivityDetected() {
+        if(LIBRARY_LOADED) {
+            if(!readMotionSensorPower()) {
+                setMotionSensorPower(true);
+            }
             return readMotionSensor() > 0;
         }
         return false;
     }
 
-    private synchronized boolean getSensorEnabled() {
-        if (HAVE_GPIO) {
-            return readMotionSensorPower();
+    static {
+        LIBRARY_LOADED = false;
+        try {
+            System.loadLibrary(LIBRARY_NAME);
+            LIBRARY_LOADED = true;
+        } catch (UnsatisfiedLinkError e) {
+            Timber.d("native library %s could not be loaded: %s", LIBRARY_NAME, e.getMessage());
         }
-        return false;
     }
 }
