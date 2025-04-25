@@ -1,7 +1,7 @@
-# Immich Android TV
+# Immix
 
 ## Fork Notice
-_THIS IS A FORK_ specifically tailored for use on a Nixplay frame.
+_THIS IS A FORK_ of `Immich Android TV` specifically tailored for use on a Nixplay frame.
 
 It has the following changes:
 - Added Android Settings to settings page
